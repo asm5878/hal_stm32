@@ -15,7 +15,7 @@
   * @attention
   *
   * Copyright (c) 2009-2019 Arm Limited. All rights reserved.
-  * Copyright (c) 2022 STMicroelectronics. All rights reserved.
+  * Copyright (c) 2022 STMicroelectronics. All rights reserved.  
   *
   * SPDX-License-Identifier: Apache-2.0
   *

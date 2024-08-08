@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    partition_stm32wba55xx.h
+  * @file    partition_stm32wba65xx.h
   * @author  MCD Application Team
-  * @brief   CMSIS STM32WBA55xx Device Initial Setup for Secure / Non-Secure Zones
+  * @brief   CMSIS STM32WBA65xx Device Initial Setup for Secure / Non-Secure Zones
   *          for ARMCM33 based on CMSIS CORE V5.4.0 partition_ARMCM33.h Template.
   *
   *          This file contains:
@@ -14,27 +14,18 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2009-2019 Arm Limited. All rights reserved.
-  * Copyright (c) 2022 STMicroelectronics. All rights reserved.  
+  * Copyright (c) 2023 STMicroelectronics.
+  * All rights reserved.
   *
-  * SPDX-License-Identifier: Apache-2.0
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
-  * Licensed under the Apache License, Version 2.0 (the License); you may
-  * not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  * www.apache.org/licenses/LICENSE-2.0
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
-  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
   ******************************************************************************
  */
 
-#ifndef PARTITION_STM32WBA55XX_H
-#define PARTITION_STM32WBA55XX_H
+#ifndef PARTITION_STM32WBA65XX_H
+#define PARTITION_STM32WBA65XX_H
 
 /*
 //-------- <<< Use Configuration Wizard in Context Menu >>> -----------------
@@ -82,12 +73,12 @@
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START0     0x08080000      /* start address of SAU region 0 */
+#define SAU_INIT_START0     0x08100000      /* start address of SAU region 0 */
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END0       0x080FFFFF      /* end address of SAU region 0 */
+#define SAU_INIT_END0       0x081FFFFF      /* end address of SAU region 0 */
 
 /*
 //     <o>Region is
@@ -108,12 +99,12 @@
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START1     0x0BF88000      /* start address of SAU region 1 */
+#define SAU_INIT_START1     0x0BF90000      /* start address of SAU region 1 */
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END1       0x0BF97FFF      /* end address of SAU region 1 */
+#define SAU_INIT_END1       0x0BFB7FFF      /* end address of SAU region 1 */
 
 /*
 //     <o>Region is
@@ -134,12 +125,12 @@
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START2     0x0C07E000      /* start address of SAU region 2 */
+#define SAU_INIT_START2     0x0C0FE000      /* start address of SAU region 2 */
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END2       0x0C07FFFF      /* end address of SAU region 2 */
+#define SAU_INIT_END2       0x0C0FFFFF      /* end address of SAU region 2 */
 
 /*
 //     <o>Region is
@@ -160,12 +151,12 @@
 /*
 //     <o>Start Address <0-0xFFFFFFE0>
 */
-#define SAU_INIT_START3     0x20010000      /* start address of SAU region 3 */
+#define SAU_INIT_START3     0x20040000      /* start address of SAU region 3 */
 
 /*
 //     <o>End Address <0x1F-0xFFFFFFFF>
 */
-#define SAU_INIT_END3       0x2001FFFF      /* end address of SAU region 3 */
+#define SAU_INIT_END3       0x2007FFFF      /* end address of SAU region 3 */
 
 /*
 //     <o>Region is
@@ -478,6 +469,16 @@
 //   <o.5>  HSEM_S_IRQn           <0=> Secure state <1=> Non-Secure state
 //   <o.6>  WKUP_S_IRQn           <0=> Secure state <1=> Non-Secure state
 //   <o.7>  RCC_AUDIOSYNC_IRQn    <0=> Secure state <1=> Non-Secure state
+//   <o.8>  TIM4_IRQn             <0=> Secure state <1=> Non-Secure state
+//   <o.9>  I2C2_EV_IRQn          <0=> Secure state <1=> Non-Secure state
+//   <o.10> I2C2_ER_IRQn          <0=> Secure state <1=> Non-Secure state
+//   <o.11> SPI2_IRQn             <0=> Secure state <1=> Non-Secure state
+//   <o.12> OTG_HS_IRQn           <0=> Secure state <1=> Non-Secure state
+//   <o.13> I2C4_EV_IRQn          <0=> Secure state <1=> Non-Secure state
+//   <o.14> I2C4_ER_IRQn          <0=> Secure state <1=> Non-Secure state
+//   <o.15> USART3_IRQn           <0=> Secure state <1=> Non-Secure state
+//   <o.16> EXTI19_RADIO_IO_IRQn  <0=> Secure state <1=> Non-Secure state
+//   <o.17> EXTI20_RADIO_IO_IRQn  <0=> Secure state <1=> Non-Secure state
 */
 #define NVIC_INIT_ITNS2_VAL      0x00000000
 
@@ -590,4 +591,4 @@ __STATIC_INLINE void TZ_SAU_Setup (void)
 
 }
 
-#endif  /* PARTITION_STM32WBA55XX_H */
+#endif  /* PARTITION_STM32WBA65XX_H */
