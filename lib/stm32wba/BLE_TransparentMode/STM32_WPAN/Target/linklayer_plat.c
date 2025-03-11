@@ -18,7 +18,7 @@
   */
 /* USER CODE END Header */
 
-#ifndef __ZEPHYR__
+
 #include "stm32wbaxx_hal.h"
 #include "stm32wbaxx_hal_conf.h"
 #include "stm32wbaxx_ll_rcc.h"
@@ -31,16 +31,17 @@
 #if (USE_TEMPERATURE_BASED_RADIO_CALIBRATION == 1)
 #include "adc_ctrl.h"
 #endif /* (USE_TEMPERATURE_BASED_RADIO_CALIBRATION == 1) */
-
+#ifndef __ZEPHYR__
 #if (CFG_LPM_LEVEL != 0)
 #include "stm32_lpm.h"
+#include "stm32_lpm_if.h"
 #endif /* (CFG_LPM_LEVEL != 0) */
+
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
 
-#else
-#include "scm.h"
+
 #endif
 #define max(a,b) ((a) > (b) ? a : b)
 
@@ -77,7 +78,6 @@ void LINKLAYER_PLAT_ClockInit(void)
 	/* Enable AHB5ENR peripheral clock (bus CLK) */
 	__HAL_RCC_RADIO_CLK_ENABLE();
 }
-
 #ifndef __ZEPHYR__
 /**
   * @brief  Link Layer active waiting loop.
@@ -86,12 +86,12 @@ void LINKLAYER_PLAT_ClockInit(void)
   */
 void LINKLAYER_PLAT_DelayUs(uint32_t delay)
 {
-__IO register uint32_t Delay = delay * (SystemCoreClock / 1000000U);
-	do
-	{
-		__NOP();
-	}
-	while (Delay --);
+  __IO register uint32_t Delay = delay * (SystemCoreClock / 1000000U);
+  do
+  {
+    __NOP();
+  }
+  while (Delay --);
 }
 
 /**
@@ -112,8 +112,12 @@ void LINKLAYER_PLAT_Assert(uint8_t condition)
   */
 void LINKLAYER_PLAT_WaitHclkRdy(void)
 {
-  /* Wait on radio bus clock readiness */
-  while(HAL_RCCEx_GetRadioBusClockReadiness() != RCC_RADIO_BUS_CLOCK_READY);
+  /* Wait on radio bus clock readiness if it has been turned of */
+  if (AHB5_SwitchedOff == 1)
+  {
+    AHB5_SwitchedOff = 0;
+    while (radio_sleep_timer_val == ll_intf_cmn_get_slptmr_value());
+  }
 }
 
 /**
@@ -473,16 +477,15 @@ void LINKLAYER_PLAT_StopRadioEvt(void)
   */
 void LINKLAYER_PLAT_RCOStartClbr(void)
 {
-#if (CFG_SCM_SUPPORTED == 1)
 #if (CFG_LPM_LEVEL != 0)
-#if (CFG_LPM_STDBY_SUPPORTED == 1)
-  UTIL_LPM_SetOffMode(1U << CFG_LPM_LL_HW_RCO_CLBR, UTIL_LPM_DISABLE);
-#endif /* (CFG_LPM_STDBY_SUPPORTED == 1) */
+  PWR_DisableSleepMode();
+  /* Disabling stop mode prevents also from entering in standby */
   UTIL_LPM_SetStopMode(1U << CFG_LPM_LL_HW_RCO_CLBR, UTIL_LPM_DISABLE);
 #endif /* (CFG_LPM_LEVEL != 0) */
+#if (CFG_SCM_SUPPORTED == 1)
   scm_setsystemclock(SCM_USER_LL_HW_RCO_CLBR, HSE_32MHZ);
   while (LL_PWR_IsActiveFlag_VOS() == 0);
-#endif /* CFG_SCM_SUPPORTED */
+#endif /* (CFG_SCM_SUPPORTED == 1) */
 }
 
 /**
@@ -492,16 +495,14 @@ void LINKLAYER_PLAT_RCOStartClbr(void)
   */
 void LINKLAYER_PLAT_RCOStopClbr(void)
 {
-#if (CFG_SCM_SUPPORTED == 1)
 #if (CFG_LPM_LEVEL != 0)
-#if (CFG_LPM_STDBY_SUPPORTED == 1)
-  UTIL_LPM_SetOffMode(1U << CFG_LPM_LL_HW_RCO_CLBR, UTIL_LPM_ENABLE);
-#endif /* (CFG_LPM_STDBY_SUPPORTED == 1) */
+  PWR_EnableSleepMode();
   UTIL_LPM_SetStopMode(1U << CFG_LPM_LL_HW_RCO_CLBR, UTIL_LPM_ENABLE);
 #endif /* (CFG_LPM_LEVEL != 0) */
+#if (CFG_SCM_SUPPORTED == 1)
   scm_setsystemclock(SCM_USER_LL_HW_RCO_CLBR, HSE_16MHZ);
   while (LL_PWR_IsActiveFlag_VOS() == 0);
-#endif /* CFG_SCM_SUPPORTED */
+#endif /* (CFG_SCM_SUPPORTED == 1) */
 }
 
 /**
