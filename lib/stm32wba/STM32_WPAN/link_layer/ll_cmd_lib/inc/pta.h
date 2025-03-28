@@ -1,4 +1,4 @@
-/*$Id: //dwh/bluetooth/DWC_ble154combo/firmware/rel/1.32a-lca02/firmware/public_inc/pta.h#1 $*/
+/*$Id: //dwh/bluetooth/DWC_ble154combo/firmware/rel/2.00a-lca01/firmware/public_inc/pta.h#1 $*/
 /**
  ******************************************************************************
  * @file    pta.h
@@ -47,8 +47,8 @@
  * @brief Enumeration holding the PTA enable and disable.
  */
 typedef enum {
-        PTA_DISABLED = 0,
-        PTA_ENABLED,
+	PTA_DISABLED = 0,
+	PTA_ENABLED,
 } pta_state;
 
 #if (SUPPORT_MASTER_CONNECTION || SUPPORT_SLAVE_CONNECTION || (SUPPORT_LE_PERIODIC_ADVERTISING && (SUPPORT_EXPLCT_OBSERVER_ROLE || SUPPORT_SYNC_ISOCHRONOUS)))
@@ -56,42 +56,42 @@ typedef enum {
  * @brief Enumeration holding the event types passed to the BLE_SetLinkCoexPriority().
  */
 typedef enum {
-        PTA_LINK_COEX_CONN,
-        PTA_LINK_COEX_PRDC_SCAN,
+	PTA_LINK_COEX_CONN,
+	PTA_LINK_COEX_PRDC_SCAN,
 } pta_link_coex_event_type;
 #endif /* (SUPPORT_MASTER_CONNECTION || SUPPORT_SLAVE_CONNECTION || \
-                  (SUPPORT_LE_PERIODIC_ADVERTISING && (SUPPORT_EXPLCT_OBSERVER_ROLE || SUPPORT_SYNC_ISOCHRONOUS))) */
+		  (SUPPORT_LE_PERIODIC_ADVERTISING && (SUPPORT_EXPLCT_OBSERVER_ROLE || SUPPORT_SYNC_ISOCHRONOUS))) */
 
 #if (SUPPORT_BRD_ISOCHRONOUS || SUPPORT_SYNC_ISOCHRONOUS || (SUPPORT_CONNECTED_ISOCHRONOUS && (SUPPORT_MASTER_CONNECTION || SUPPORT_SLAVE_CONNECTION)))
 /**
  * @brief Enumeration holding the event types passed to the BLE_SetISOCoexPriority().
  */
 typedef enum {
-        PTA_ISO_CIG,
-        PTA_ISO_BIG,
+	PTA_ISO_CIG,
+	PTA_ISO_BIG,
 } pta_iso_type;
 #endif /* (SUPPORT_BRD_ISOCHRONOUS || SUPPORT_SYNC_ISOCHRONOUS || \
-                  (SUPPORT_CONNECTED_ISOCHRONOUS && (SUPPORT_MASTER_CONNECTION || SUPPORT_SLAVE_CONNECTION))) */
+		  (SUPPORT_CONNECTED_ISOCHRONOUS && (SUPPORT_MASTER_CONNECTION || SUPPORT_SLAVE_CONNECTION))) */
 
 
 /**
  * @brief Enumeration holding all the error codes for the PTA interfaces
  */
 typedef enum pta_error {
-        PTA_ERROR_SUCCESS,
-        PTA_ERROR_PTA_NOT_ENABLED,
-        PTA_ERROR_INVALID_PRIORITY_CONF,
-        PTA_ERROR_UNKNOWN_CONN_HANDLE,
-        PTA_ERROR_UNKNOWN_PRDC_SYNC_HANDLE,
-        PTA_ERROR_UNKNOWN_CIG_HANDLE,
-        PTA_ERROR_UNKNOWN_BIG_HANDLE,
-        PTA_ERROR_INVALID_NBR_OF_PKTS,
-        PTA_ERROR_INVALID_TIMEOUT,
-        PTA_ERROR_INVALID_REQUEST_TO_EVENT_TIME,
-        PTA_ERROR_INVALID_PTA_STATE,
-        PTA_ERROR_INIT_ALREADY_CALLED,
-        PTA_ERROR_PTA_ENABLED_IN_INIT,
-        PTA_ERROR_PTA_INIT_NOT_CALLED,
+	PTA_ERROR_SUCCESS,
+	PTA_ERROR_PTA_NOT_ENABLED,
+	PTA_ERROR_INVALID_PRIORITY_CONF,
+	PTA_ERROR_UNKNOWN_CONN_HANDLE,
+	PTA_ERROR_UNKNOWN_PRDC_SYNC_HANDLE,
+	PTA_ERROR_UNKNOWN_CIG_HANDLE,
+	PTA_ERROR_UNKNOWN_BIG_HANDLE,
+	PTA_ERROR_INVALID_NBR_OF_PKTS,
+	PTA_ERROR_INVALID_TIMEOUT,
+	PTA_ERROR_INVALID_REQUEST_TO_EVENT_TIME,
+	PTA_ERROR_INVALID_PTA_STATE,
+	PTA_ERROR_INIT_ALREADY_CALLED,
+	PTA_ERROR_PTA_ENABLED_IN_INIT,
+	PTA_ERROR_PTA_INIT_NOT_CALLED,
 } pta_error;
 
 /***************************** Functions Prototypes *****************************/
@@ -113,7 +113,7 @@ typedef enum pta_error {
  * 						PTA_ERROR_SUCCESS : Otherwise.
  */
 pta_error pta_enable(
-                pta_state enable);
+		pta_state enable);
 
 /**
  * @brief Used to initialize the PTA feature. The PHY sequences are configured with
@@ -129,12 +129,12 @@ pta_error pta_enable(
  * 					   	PTA_ERROR_SUCCESS : Otherwise.
  */
 pta_error pta_init(
-                uint8_t request_to_event_time);
+		uint8_t request_to_event_time);
 
 /***************************** BLE Functions *****************************/
 #if (SUPPORT_BLE)
 #if (SUPPORT_MASTER_CONNECTION || SUPPORT_SLAVE_CONNECTION || \
-        (SUPPORT_LE_EXTENDED_ADVERTISING && SUPPORT_LE_PERIODIC_ADVERTISING && (SUPPORT_EXPLCT_OBSERVER_ROLE || SUPPORT_SYNC_ISOCHRONOUS)))
+	(SUPPORT_LE_EXTENDED_ADVERTISING && SUPPORT_LE_PERIODIC_ADVERTISING && (SUPPORT_EXPLCT_OBSERVER_ROLE || SUPPORT_SYNC_ISOCHRONOUS)))
 /**
  * @brief Used to configure the priority of the ACL and Periodic Scan events.
  * @note This API can be called directly to configure the priority of the ACL and Periodic Scan events. In case the BLE controller is supported, beside this API,
@@ -163,14 +163,14 @@ pta_error pta_init(
  * 			 			PTA_ERROR_SUCCESS					: Otherwise.
  */
 pta_error pta_set_link_coex_priority(
-                pta_link_coex_event_type event_type,
-                uint16_t handle,
-                uint32_t priority,
-                uint32_t priority_mask,
-                uint8_t acl_multi_slot_nbr_of_packets,
-                uint8_t link_loss_limit_timeout);
+		pta_link_coex_event_type event_type,
+		uint16_t handle,
+		uint32_t priority,
+		uint32_t priority_mask,
+		uint8_t acl_multi_slot_nbr_of_packets,
+		uint8_t link_loss_limit_timeout);
 #endif /* (SUPPORT_MASTER_CONNECTION || SUPPORT_SLAVE_CONNECTION || \
-                  (SUPPORT_LE_EXTENDED_ADVERTISING && SUPPORT_LE_PERIODIC_ADVERTISING && (SUPPORT_EXPLCT_OBSERVER_ROLE || SUPPORT_SYNC_ISOCHRONOUS))) */
+		  (SUPPORT_LE_EXTENDED_ADVERTISING && SUPPORT_LE_PERIODIC_ADVERTISING && (SUPPORT_EXPLCT_OBSERVER_ROLE || SUPPORT_SYNC_ISOCHRONOUS))) */
 
 #if (SUPPORT_BRD_ISOCHRONOUS || SUPPORT_SYNC_ISOCHRONOUS || SUPPORT_CONNECTED_ISOCHRONOUS)
 /**
@@ -199,11 +199,11 @@ pta_error pta_set_link_coex_priority(
  * 						PTA_ERROR_SUCCESS			 : Otherwise.
  */
 pta_error pta_set_iso_coex_priority(
-                pta_iso_type iso_type,
-                uint8_t group_id,
-                uint32_t priority,
-                uint32_t priority_mask,
-                uint8_t link_loss_limit_timeout);
+		pta_iso_type iso_type,
+		uint8_t group_id,
+		uint32_t priority,
+		uint32_t priority_mask,
+		uint8_t link_loss_limit_timeout);
 #endif /* (SUPPORT_BRD_ISOCHRONOUS || SUPPORT_SYNC_ISOCHRONOUS || SUPPORT_CONNECTED_ISOCHRONOUS) */
 #endif /* SUPPORT_BLE */
 
@@ -224,8 +224,8 @@ pta_error pta_set_iso_coex_priority(
  * 						PTA_ERROR_SUCCESS : Otherwise.
  */
 pta_error pta_set_coex_priority(
-                uint32_t priority,
-                uint32_t priority_mask);
+		uint32_t priority,
+		uint32_t priority_mask);
 
 /***************************** MAC Functions *****************************/
 #if (SUPPORT_MAC)
@@ -246,8 +246,8 @@ pta_error pta_set_coex_priority(
  * 			 			PTA_ERROR_SUCCESS : Otherwise.
  */
 pta_error pta_set_mac_coex_priority(
-                uint32_t priority,
-                uint32_t priority_mask);
+		uint32_t priority,
+		uint32_t priority_mask);
 #endif /* SUPPORT_MAC */
 /** @}
 */
