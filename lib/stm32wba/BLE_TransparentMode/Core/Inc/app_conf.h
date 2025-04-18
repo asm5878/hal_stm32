@@ -164,11 +164,11 @@
  *   - 0 : Stop mode 1 is used as low power mode.
  *
  ******************************************************************************/
-#define CFG_LPM_LEVEL            (1)
+#define CFG_LPM_LEVEL            (2)
 #define CFG_LPM_STDBY_SUPPORTED  (1)
 
 /* Defines time to wake up from standby before radio event to meet timings */
-#define CFG_LPM_STDBY_WAKEUP_TIME (1500)
+#define CFG_LPM_STDBY_WAKEUP_TIME (3500)
 
 /* USER CODE BEGIN Low_Power 0 */
 
