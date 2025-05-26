@@ -2,6 +2,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+if(DEFINED CONFIG_BOARD_NUCLEO_WBA52CG)
+  message(FATAL_ERROR "BLE library is not compatible with nucleo_wba52cg")
+endif()
+
 zephyr_compile_definitions( -DBLE )
 
 zephyr_include_directories(BLE_TransparentMode/Core/Inc)
@@ -31,7 +35,7 @@ zephyr_sources(BLE_TransparentMode/STM32_WPAN/Target/power_table.c)
 zephyr_sources(Common/WPAN/Modules/Log/log_module.c)
 zephyr_sources(Common/WPAN/Interfaces/hw_pka.c)
 zephyr_sources(Common/WPAN/Interfaces/hw_pka_p256.c)
-zephyr_sources(Common/WPAN/Modules/scm.c)
+#zephyr_sources(Common/WPAN/Modules/scm.c)
 zephyr_sources(Common/WPAN/Modules/RTDebug/RTDebug.c)
 zephyr_sources(STM32_WPAN/link_layer/ll_sys/src/ll_sys_cs.c)
 zephyr_sources(STM32_WPAN/link_layer/ll_sys/src/ll_sys_dp_slp.c)
@@ -60,8 +64,8 @@ set_target_properties(
   stm32wba_ble_lib PROPERTIES IMPORTED_LOCATION ${STM32WBA_BLE_LIB_DIR}/stm32wba_ble_stack_llo.a
 )
 
-# Selecting the proper version of link layer lib according the soc
-# Checking all the soc variants and not simply relying on board name 
+# We need to set a variable with the proper lib name to be used
+# We need to check all the soc variants and not rely to board name to address custom board also 
 
 if(CONFIG_SOC_STM32WBA65XX)
   message(STATUS "STM32WBA6 link layer lib selected")
@@ -73,7 +77,6 @@ if(CONFIG_SOC_STM32WBA55XX OR SOC_STM32WBA52XX)
   set(LL_LIB "LinkLayer_BLE_Full_lib.a")
 endif()
 
-# Using the selected version of link layer lib
 set_target_properties(stm32wba_ll_lib PROPERTIES IMPORTED_LOCATION ${STM32WBA_BLE_LIB_DIR}/${LL_LIB})
 set_target_properties(stm32wba_ble_lib PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${STM32WBA_BLE_LIB_INCLUDE_DIR})
 set_target_properties(stm32wba_ll_lib PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${STM32WBA_LL_LIB_INCLUDE_DIR})

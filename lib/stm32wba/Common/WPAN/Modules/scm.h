@@ -1,4 +1,3 @@
-/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file    scm.h
@@ -16,7 +15,6 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef SCM_H
@@ -56,9 +54,6 @@ typedef enum {
   SCM_USER_APP,
   SCM_USER_LL_FW,
   SCM_USER_LL_HW_RCO_CLBR,
-  /* USER CODE BEGIN SCM_USER */
-
-  /* USER CODE END SCM_USER */
   TOTAL_CLIENT_NUM, /* To be at the end of the enum */
 } scm_user_id_t;
 

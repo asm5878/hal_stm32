@@ -1,4 +1,3 @@
-/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file    scm.c
@@ -16,7 +15,6 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
 #include "scm.h"
@@ -203,7 +201,7 @@ OPTIMIZED static void SwitchHsePre(scm_hse_hsepre_t hse_pre)
   /* Exit hook for HSI switch */
   SCM_HSI_SwithSystemClock_Exit();
   /* SCM HSE END */
-
+  
   /* Set/Clear HSEPRE */
   if(hse_pre == HSEPRE_DISABLE)
   {
@@ -463,8 +461,10 @@ OPTIMIZED void scm_setup(void)
 
   /* Start HSE */
   LL_RCC_HSE_Enable();
-
+  
+  /* SCM HSE BEGIN */
   if ((LL_RCC_HSE_IsReady() != 0) && (RadioState == SCM_RADIO_ACTIVE))
+  /* SCM HSE END */
   {
     /**
       * The current system configuration is:
@@ -502,13 +502,15 @@ OPTIMIZED void scm_setup(void)
       LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1);
     }
 
+    /* SCM HSE BEGIN */
     if (LL_RCC_HSE_IsReady() != 0)
+    /* SCM HSE END */
     {
       scm_hserdy_isr();
     }
     else
-    {
-      /* Enable HSERDY interrupt */
+    {      
+      /* Enable HSERDY interrupt ALMA: Is it required ? */
       __HAL_RCC_ENABLE_IT(RCC_IT_HSERDY);
     }
   }
@@ -582,78 +584,74 @@ OPTIMIZED void scm_setsystemclock(scm_user_id_t user_id, scm_clockconfig_t syscl
   /* Get the higher frequency required by the clients */
   max_freq_requested = scm_getmaxfreq();
 
-  /* Check if we need to apply another clock frequency */
-  if(scm_system_clock_config.targeted_clock_freq != max_freq_requested)
+  /* Check the current system clock source (HSI or HSE) */
+  if(LL_RCC_GetSysClkSource() == LL_RCC_SYS_CLKSOURCE_STATUS_HSI)
   {
     scm_system_clock_config.targeted_clock_freq = max_freq_requested;
+    
+    /* HSI is still the system clock */
 
-    /* Check the current system clock source (HSI or HSE) */
-    if(LL_RCC_GetSysClkSource() == LL_RCC_SYS_CLKSOURCE_STATUS_HSI)
+    if(scm_system_clock_config.targeted_clock_freq == HSE_16MHZ)
     {
-      /* HSI is still the system clock */
+      /* The system clock target is HSE 16Mhz */
 
-      if(scm_system_clock_config.targeted_clock_freq == HSE_16MHZ)
-      {
-        /* The system clock target is HSE 16Mhz */
-
-        /* Clear VOS (Range 2) */
-        LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE2);
-      }
-      else
-      {
-        /* The system clock target is higher than HSE 16Mhz */
-
-        /* Set VOS (Range 1) */
-        LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1);
-
-        if(RadioState != SCM_RADIO_NOT_ACTIVE)
-        {
-            /* Disable HSERDY interrupt */
-            __HAL_RCC_DISABLE_IT(RCC_IT_HSERDY);
-
-            /* Wait until VOS has changed */
-            while (LL_PWR_IsActiveFlag_VOS() == 0);
-
-            /* Wait until HSE is ready */
-            while (LL_RCC_HSE_IsReady() == 0);
-
-            LL_RCC_HSE_DisablePrescaler();
-
-            /* Switch to HSE */
-            LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_HSE);
-            while (LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_HSE);
-
-            scm_setwaitstates(HSE32); /* There is no limitation when in Range1 */
-
-            LL_RCC_SetAHB5Divider(LL_RCC_AHB5_DIVIDER_1);
-
-            SCM_HSI_CLK_OFF();
-
-            /* Check if PLL is requested */
-            if(scm_system_clock_config.targeted_clock_freq == SYS_PLL)
-            {
-                /* Configure system clock to use PLL */
-                ConfigStartPll();
-            }
-
-            /* Ensure time base clock coherency */
-            SystemCoreClockUpdate();
-        }
-      }
-
-      /* System clock is going to be configured in RCC HSERDY interrupt */
+      /* Clear VOS (Range 2) */
+      LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE2);
     }
     else
     {
+      /* The system clock target is higher than HSE 16Mhz */
+
+      /* Set VOS (Range 1) */
+      LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1);
+
+      if(RadioState != SCM_RADIO_NOT_ACTIVE)
+      {
+        /* Disable HSERDY interrupt */
+        __HAL_RCC_DISABLE_IT(RCC_IT_HSERDY);
+
+        /* Wait until VOS has changed */
+        while (LL_PWR_IsActiveFlag_VOS() == 0);
+
+        /* Wait until HSE is ready */
+        while (LL_RCC_HSE_IsReady() == 0);
+
+        LL_RCC_HSE_DisablePrescaler();
+
+        /* Switch to HSE */
+        LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_HSE);
+        while (LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_HSE);
+
+        scm_setwaitstates(HSE32); /* There is no limitation when in Range1 */
+
+        LL_RCC_SetAHB5Divider(LL_RCC_AHB5_DIVIDER_1);
+
+        SCM_HSI_CLK_OFF();
+
+        /* Check if PLL is requested */
+        if(scm_system_clock_config.targeted_clock_freq == SYS_PLL)
+        {
+            /* Configure system clock to use PLL */
+            ConfigStartPll();
+        }
+
+        /* Ensure time base clock coherency */
+        SystemCoreClockUpdate();
+      }
+    }
+
+    /* System clock is going to be configured in RCC HSERDY interrupt */
+  }
+  else
+  {
+    if (scm_system_clock_config.targeted_clock_freq != max_freq_requested)
+    {
+      scm_system_clock_config.targeted_clock_freq = max_freq_requested;
+      
       /* HSE is already the system clock source */
       /* Configure the system clock */
-      scm_systemclockconfig();
-    }
-  }
-  else if(scm_system_clock_config.targeted_clock_freq == SYS_PLL)
-  {
-    /* PLL has requested but system clock is already on PLL */
-    scm_pllready();
+      scm_systemclockconfig();        
+    }      
   }
 
   UTILS_EXIT_LIMITED_CRITICAL_SECTION();

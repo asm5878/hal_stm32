@@ -297,7 +297,8 @@ void ll_sys_reset(void)
   /* USER CODE BEGIN ll_sys_reset_1 */
 
   /* USER CODE END ll_sys_reset_1 */
-
+  drift_time = DRIFT_TIME_DEFAULT + 10;
+  exec_time = EXEC_TIME_DEFAULT + 10;
   if((drift_time != DRIFT_TIME_DEFAULT) || (exec_time != EXEC_TIME_DEFAULT))
   {
     ll_sys_config_BLE_schldr_timings(drift_time, exec_time);

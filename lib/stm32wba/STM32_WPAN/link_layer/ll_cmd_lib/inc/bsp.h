@@ -1,4 +1,4 @@
-/*$Id: //dwh/bluetooth/DWC_ble154combo/firmware/rel/1.32a-lca02/firmware/public_inc/bsp.h#2 $*/
+/*$Id: //dwh/bluetooth/DWC_ble154combo/firmware/rel/2.00a-lca01/firmware/public_inc/bsp.h#1 $*/
 
 /**
  ********************************************************************************
@@ -47,7 +47,7 @@
 #define PRIORITY_LEVEL_MASK 0x0F
 
 /**
- * This macros specify the different combinations that can be used to enable or disable
+ * This macros specify the different combinations that can be used to enable or disable 
  * a specific ISR
  */
 
@@ -288,6 +288,7 @@ typedef enum Debug_GPIO_e{
 	DBG_IO_ED_TMR_HNDL                                          ,
 	DBG_IO_OS_TMR_EVNT_CBK                                      ,
 	DBG_IO_PROFILE_MARKER_PHY_WAKEUP_TIME                       ,
+	DBG_IO_PROFILE_MARKER_BLOCKING_PHY_WAKEUP_TIME              ,
 	DBG_IO_PROFILE_END_DRIFT_TIME                               ,
 	DBG_IO_PROC_RADIO_RCV										,
 	DBG_IO_EVNT_TIME_UPDT										,
@@ -521,7 +522,7 @@ void bsp_mcu_slp(void);
  * @retval None.
  */
 
-void bsp_gpio_clear(uint8_t gpio_num);
+void bsp_gpio_clear(uint8_t gpio_num);   
 
 
 /**
@@ -531,7 +532,7 @@ void bsp_gpio_clear(uint8_t gpio_num);
  *
  * @retval None.
  */
-void bsp_gpio_set(uint8_t gpio_num);
+void bsp_gpio_set(uint8_t gpio_num);   
 
 
 /**
@@ -599,7 +600,7 @@ void bsp_switch_to_lw_isr(uint8_t priority);
 void bsp_wait_for_busclkrdy(void);
 /**
  * @brief used to start temperature calculations
- * if the upper layer has informed the link layer by the existence of temperature sensor through @ref ll_intf_set_temperature_sensor_stat() or llhwc_cmn_set_temperature_sensor_stat()  .
+ * if the upper layer has informed the link layer by the existence of temperature sensor through @ref ll_intf_set_temperature_sensor_stat() or llhwc_cmn_set_temperature_sensor_stat()  . 
  * New temperature will be requested in the following cases:
  * 1- at initialization when the @ref ll_intf_set_temperature_sensor_state or llhwc_cmn_set_temperature_sensor_stat is called
  * 2- before any radio event
