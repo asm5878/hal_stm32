@@ -26,7 +26,9 @@
 #include "app_common.h"
 #include "app_conf.h"
 #include "linklayer_plat.h"
+#if (CFG_SCM_SUPPORTED == 1)
 #include "scm.h"
+#endif
 #include "log_module.h"
 #if (USE_TEMPERATURE_BASED_RADIO_CALIBRATION == 1)
 #include "adc_ctrl.h"
@@ -42,7 +44,9 @@
 /* USER CODE END Includes */
 
 #else
+#if (CFG_SCM_SUPPORTED == 1)
 #include "scm.h"
+#endif
 #endif /* __ZEPHYR__ */
 
 #ifndef __ZEPHYR__
