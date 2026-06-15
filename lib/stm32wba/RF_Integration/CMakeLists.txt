@@ -1,6 +1,12 @@
 # Copyright (c) 2025 STMicroelectronics
 #
 # SPDX-License-Identifier: Apache-2.0
+if(CONFIG_STM32WBA_RT_DEBUG_IO_DTB)
+	zephyr_compile_definitions(-DCFG_RT_DEBUG_DTB=1)
+else()
+	zephyr_compile_definitions(-DCFG_RT_DEBUG_DTB=0)
+endif()
+
 if(CONFIG_BT_STM32WBA)
   if(CONFIG_IEEE802154_STM32WBA)
     if(NOT CONFIG_NET_L2_CUSTOM_IEEE802154)
