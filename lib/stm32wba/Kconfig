@@ -1,0 +1,11 @@
+# Copyright (c) 2026 STMicroelectronics
+# SPDX-License-Identifier: Apache-2.0
+
+config STM32WBA_RT_DEBUG_IO_DTB
+	bool "Real Time Debug IOs for DTB Usage"
+	default n
+	depends on BT_STM32WBA || IEEE802154_STM32WBA
+	select SOC_LATE_INIT_HOOK
+	help
+	   This option enables the Real Time Debug module to provide HW signals 
+	   from RF PHY activity.

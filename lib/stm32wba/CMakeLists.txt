@@ -13,6 +13,7 @@ zephyr_include_directories(Utilities/trace/adv_trace)
 zephyr_include_directories(STM32_WPAN)
 
 zephyr_sources(Common/WPAN/Modules/RTDebug/RTDebug.c)
+zephyr_sources(Common/WPAN/Modules/RTDebug/RTDebug_dtb.c)
 zephyr_sources(Common/WPAN/Modules/Log/log_module.c)
 zephyr_sources(Common/WPAN/Interfaces/hw_pka.c)
 zephyr_sources(Common/WPAN/Interfaces/hw_pka_p256.c)
@@ -29,6 +30,9 @@ zephyr_sources(Common/WPAN/Modules/BasicAES/baes_cmac.c)
 zephyr_sources(Common/WPAN/Modules/BasicAES/baes_ecb.c)
 zephyr_sources(Common/WPAN/Interfaces/hw_aes.c)
 
+if(CONFIG_STM32WBA_RT_DEBUG_IO_DTB)
+  zephyr_sources(RF_Integration/Core/stm32wbax_soc.c)
+endif()
 
 set(STM32WBA_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../zephyr/blobs/stm32wba/lib)
 

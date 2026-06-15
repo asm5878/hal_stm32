@@ -386,8 +386,9 @@ typedef enum
  ******************************************************************************/
 
 #define CFG_RT_DEBUG_GPIO_MODULE            (0)
+#ifndef __ZEPHYR__
 #define CFG_RT_DEBUG_DTB                    (0)
-
+#endif
 /******************************************************************************
  * System Clock Manager module configuration
  *
