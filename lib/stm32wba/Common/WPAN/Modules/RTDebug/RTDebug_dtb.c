@@ -51,18 +51,16 @@ static void RT_DEBUG_SetDTBMode(uint8_t dtb, uint8_t mode)
 
 void RT_DEBUG_DTBInit(void)
 {
-  /** access_match PA7 DTB[7] on TL_10 **/
-/*
+  /** spi_cs_n PA7 DTB[7] on TL_10 **/
   LL_GPIO_SetPinSpeed(GPIOA,LL_GPIO_PIN_7,LL_GPIO_SPEED_FREQ_HIGH);
   LL_GPIO_SetPinMode(GPIOA,LL_GPIO_PIN_7,LL_GPIO_MODE_ALTERNATE);
   LL_GPIO_SetAFPin_0_7(GPIOA,LL_GPIO_PIN_7,LL_GPIO_AF_15);
-  LL_PWR_EnableGPIOStandbyRetention(LL_PWR_GPIO_STATE_RETENTION_ENABLE_PORTA, LL_PWR_GPIO_PIN_7);
-*/
+  // LL_PWR_EnableGPIOStandbyRetention(LL_PWR_GPIO_STATE_RETENTION_ENABLE_PORTA, LL_PWR_GPIO_PIN_7);
 
-  /** long_range_iq_vld PA6 DTB[6] on TL_9 **/
+  /** radio_irq PA6 DTB[6] on TL_9 **/
   LL_GPIO_SetPinMode(GPIOA,LL_GPIO_PIN_6,LL_GPIO_MODE_ALTERNATE);
   LL_GPIO_SetAFPin_0_7(GPIOA,LL_GPIO_PIN_6,LL_GPIO_AF_15);
-
+  // LL_PWR_EnableGPIOStandbyRetention(LL_PWR_GPIO_STATE_RETENTION_ENABLE_PORTA, LL_PWR_GPIO_PIN_6);
 
   /** tx_data PA5 DTB[5] on TL_8 **/
 /*
@@ -93,14 +91,13 @@ void RT_DEBUG_DTBInit(void)
   /** tx_on PA1 DTB[1] on TL_2 **/
   LL_GPIO_SetPinMode(GPIOA,LL_GPIO_PIN_1,LL_GPIO_MODE_ALTERNATE);
   LL_GPIO_SetAFPin_0_7(GPIOA,LL_GPIO_PIN_1,LL_GPIO_AF_15);
-  LL_PWR_EnableGPIOStandbyRetention(LL_PWR_GPIO_STATE_RETENTION_ENABLE_PORTA, LL_PWR_GPIO_PIN_1);
+  // LL_PWR_EnableGPIOStandbyRetention(LL_PWR_GPIO_STATE_RETENTION_ENABLE_PORTA, LL_PWR_GPIO_PIN_1);
 
   /** rx_on PA0 DTB[0] on TL_1 **/
-/*
   LL_GPIO_SetPinMode(GPIOA,LL_GPIO_PIN_0,LL_GPIO_MODE_ALTERNATE);
   LL_GPIO_SetAFPin_0_7(GPIOA,LL_GPIO_PIN_0,LL_GPIO_AF_15);
-  LL_PWR_EnableGPIOStandbyRetention(LL_PWR_GPIO_STATE_RETENTION_ENABLE_PORTA, LL_PWR_GPIO_PIN_0);
-*/
+  // LL_PWR_EnableGPIOStandbyRetention(LL_PWR_GPIO_STATE_RETENTION_ENABLE_PORTA, LL_PWR_GPIO_PIN_0);
+
 
   /* Set SYSCFG for DTB */
   uint32_t addr = (uint32_t)(&SYSCFG->SECCFGR);
@@ -130,9 +127,12 @@ void RT_DEBUG_DTBConfig(void)
  * A10 o PC1 o_pm_act_com_sw
  **/
 
-  RT_DEBUG_SetDTBMode(6, 3) ; /* Radio IRQ */
-  RT_DEBUG_SetDTBMode(1, 1); /* tx_on */
 
+  RT_DEBUG_SetDTBMode(0, 1); /* rx_on */
+  RT_DEBUG_SetDTBMode(1, 1); /* tx_on */
+  RT_DEBUG_SetDTBMode(6, 3); /* Radio IRQ */
+  RT_DEBUG_SetDTBMode(7, 2); /* spi_cs_n */
+  
   //RT_DEBUG_SetDTBMode(0, 1); /* rx_on */
   //RT_DEBUG_SetDTBMode(1, 3); /* sleep timer irq */
   //RT_DEBUG_SetDTBMode(2, 5); /* CM33_sleepdeep */
