@@ -194,7 +194,7 @@
  * Defines time to wake up from standby before radio event to meet timings
  * This value will be dynamically updated when using CFG_LPM_WAKEUP_TIME_PROFILING
  */
-#define CFG_LPM_STDBY_WAKEUP_TIME (1500U)
+#define CFG_LPM_STDBY_WAKEUP_TIME (900U)
 
 /* USER CODE BEGIN Low_Power 0 */
 
